@@ -1,4 +1,4 @@
-
+// LanguageContext.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { translateText } from '@/utils/stringUtils';
 
@@ -13,15 +13,18 @@ type LanguageContextType = {
 
 const supportedLanguages = [
   { code: 'en', name: 'English' },
-  { code: 'es', name: 'Español' },
-  { code: 'hi', name: 'हिंदी' },
-  { code: 'fr', name: 'Français' },
-  { code: 'ar', name: 'العربية', isRtl: true },
+  { code: 'hi', name: 'Hindi' },
+  { code: 'ta', name: 'Tamil' },
+  { code: 'te', name: 'Telugu' },
+  { code: 'kn', name: 'Kannada' },
+  { code: 'mr', name: 'Marathi' },
+  { code: 'es', name: 'Spanish' },
+  { code: 'fr', name: 'French' },
+  { code: 'ar', name: 'Arabic' },
 ];
 
 const rtlLanguages = ['ar', 'he', 'ur'];
 
-// Simple translations for UI elements
 const translations: Record<string, Record<string, string>> = {
   es: {
     'Search': 'Buscar',
@@ -68,49 +71,38 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export const useLanguage = () => useContext(LanguageContext);
 
-export const LanguageProvider: React.FC<{children: ReactNode}> = ({ children }) => {
-  // Try to get saved language preference or use browser language
+export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const getSavedOrBrowserLanguage = () => {
     const saved = localStorage.getItem('preferred-language');
-    if (saved && supportedLanguages.some(lang => lang.code === saved)) {
-      return saved;
-    }
-    
+    if (saved && supportedLanguages.some(lang => lang.code === saved)) return saved;
+
     const browserLang = navigator.language.split('-')[0];
-    if (supportedLanguages.some(lang => lang.code === browserLang)) {
-      return browserLang;
-    }
-    
-    return 'en'; // Default
+    if (supportedLanguages.some(lang => lang.code === browserLang)) return browserLang;
+
+    return 'en';
   };
 
   const [language, setLanguage] = useState(getSavedOrBrowserLanguage);
-  const [isRtl, setIsRtl] = useState(rtlLanguages.includes(language));
-  
-  // Sync language direction with HTML dir attribute
+
   useEffect(() => {
-    setIsRtl(rtlLanguages.includes(language));
-    document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+    const newIsRtl = rtlLanguages.includes(language);
+    document.documentElement.dir = newIsRtl ? 'rtl' : 'ltr';
     document.documentElement.lang = language;
     localStorage.setItem('preferred-language', language);
-  }, [language, isRtl]);
+  }, [language]);
 
-  // Simple translation function for UI elements
   const t = (text: string): string => {
     if (language === 'en') return text;
-    
     return translations[language]?.[text] || text;
   };
-  
-  // Async translation for longer content
+
   const translateAsync = async (text: string): Promise<string> => {
     if (language === 'en') return text;
-    
     try {
       return await translateText(text, language);
     } catch (err) {
       console.error('Translation error:', err);
-      return text; // Fallback to original text
+      return text;
     }
   };
 
@@ -121,13 +113,13 @@ export const LanguageProvider: React.FC<{children: ReactNode}> = ({ children }) 
   };
 
   return (
-    <LanguageContext.Provider value={{ 
-      language, 
-      changeLanguage, 
-      t, 
+    <LanguageContext.Provider value={{
+      language,
+      changeLanguage,
+      t,
       translateAsync,
-      isRtl,
-      supportedLanguages 
+      isRtl: rtlLanguages.includes(language),
+      supportedLanguages
     }}>
       {children}
     </LanguageContext.Provider>

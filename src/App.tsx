@@ -21,6 +21,7 @@ import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notifications";
 import TranslateComponent from "@/components/TranslateComponent";
+import HelplineSection from "./components/helpline/HelplineSection";
 
 
 // Create a new QueryClient instance
@@ -34,9 +35,10 @@ function App() {
           <LanguageProvider>
             <AppProvider>
               <BrowserRouter>
-              <div style={{ position: "fixed", top: 10, right: 10, zIndex: 9999 }}>
-  <TranslateComponent />
-</div>
+              <TranslateComponent />
+
+          
+  
 
                 <Routes>
                   <Route path="/" element={<Index />} />
@@ -52,6 +54,8 @@ function App() {
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/notifications" element={<Notifications />} />
                   <Route path="*" element={<NotFound />} />
+                  <Route path="/helpline" element={<HelplineSection />} />
+
                 </Routes>
                 <Toaster />
                 <Sonner />

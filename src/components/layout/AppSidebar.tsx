@@ -47,6 +47,8 @@ const menuItems = [
   { name: 'Discussions', href: '/discussions', icon: MessageSquare },
   { name: 'Ideas', href: '/ideas', icon: LightbulbIcon },
   { name: 'Achievements', href: '/achievements', icon: Trophy },
+  { name: 'Helpline', href: '/helpline', icon: BadgeCheck },
+
 ];
 
 const AppSidebar = () => {
