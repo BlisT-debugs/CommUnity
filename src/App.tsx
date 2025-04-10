@@ -20,6 +20,8 @@ import CommunityDetail from "./pages/CommunityDetail";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notifications";
+import TranslateComponent from "@/components/TranslateComponent";
+
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -32,6 +34,10 @@ function App() {
           <LanguageProvider>
             <AppProvider>
               <BrowserRouter>
+              <div style={{ position: "fixed", top: 10, right: 10, zIndex: 9999 }}>
+  <TranslateComponent />
+</div>
+
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
