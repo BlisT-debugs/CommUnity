@@ -6,6 +6,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Eye, EyeOff, Mail, Lock, User, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import AppHeader from '@/components/layout/AppHeader';
+import AppSidebar from '@/components/layout/AppSidebar';
+
+
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -98,221 +103,261 @@ const Auth = () => {
   };
 
   return (
-    <div className="container flex items-center justify-center min-h-[80vh] py-8">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold flex items-center justify-center gap-2">
-            <span className="rounded-lg bg-primary px-2 py-1">
-              <span className="text-white">Comm</span>
-            </span>
-            <span className="text-socio-darkgreen">Unity</span>
-          </h1>
-          <p className="text-muted-foreground mt-2">Connect communities for collaborative problem solving</p>
-        </div>
-        
-        <Tabs defaultValue="login" className="w-full">
-          <TabsList className="grid grid-cols-2 w-full mb-6">
-            <TabsTrigger value="login">Login</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="login">
-            <Card>
-              <CardHeader>
-                <CardTitle>Welcome back</CardTitle>
-                <CardDescription>Enter your credentials to access your account</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {authError && (
-                  <Alert variant="destructive" className="mb-4">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertDescription>{authError}</AlertDescription>
-                  </Alert>
-                )}
-                
-                <Form {...loginForm}>
-                  <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4">
-                    <FormField
-                      control={loginForm.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                              <Input placeholder="your.email@example.com" className="pl-10" {...field} />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={loginForm.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Password</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                              <Input 
-                                type={isShowingPassword ? "text" : "password"} 
-                                className="pl-10 pr-10" 
-                                {...field} 
-                              />
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                className="absolute right-0 top-0"
-                                onClick={() => setIsShowingPassword(!isShowingPassword)}
-                              >
-                                {isShowingPassword ? (
-                                  <EyeOff className="h-4 w-4 text-muted-foreground" />
-                                ) : (
-                                  <Eye className="h-4 w-4 text-muted-foreground" />
-                                )}
-                                <span className="sr-only">
-                                  {isShowingPassword ? "Hide password" : "Show password"}
-                                </span>
-                              </Button>
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                      {isLoading ? "Logging in..." : "Login"}
-                    </Button>
-                  </form>
-                </Form>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="signup">
-            <Card>
-              <CardHeader>
-                <CardTitle>Create an account</CardTitle>
-                <CardDescription>Join our community platform</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {authError && (
-                  <Alert variant="destructive" className="mb-4">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertDescription>{authError}</AlertDescription>
-                  </Alert>
-                )}
-                
-                <Form {...signupForm}>
-                  <form onSubmit={signupForm.handleSubmit(handleSignup)} className="space-y-4">
-                    <FormField
-                      control={signupForm.control}
-                      name="username"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Username</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                              <Input placeholder="username" className="pl-10" {...field} />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={signupForm.control}
-                      name="fullName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Full Name</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                              <Input placeholder="John Doe" className="pl-10" {...field} />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={signupForm.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                              <Input placeholder="your.email@example.com" className="pl-10" {...field} />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={signupForm.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Password</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                              <Input 
-                                type={isShowingPassword ? "text" : "password"} 
-                                className="pl-10 pr-10" 
-                                {...field} 
-                              />
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                className="absolute right-0 top-0"
-                                onClick={() => setIsShowingPassword(!isShowingPassword)}
-                              >
-                                {isShowingPassword ? (
-                                  <EyeOff className="h-4 w-4 text-muted-foreground" />
-                                ) : (
-                                  <Eye className="h-4 w-4 text-muted-foreground" />
-                                )}
-                                <span className="sr-only">
-                                  {isShowingPassword ? "Hide password" : "Show password"}
-                                </span>
-                              </Button>
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                      {isLoading ? "Creating account..." : "Sign Up"}
-                    </Button>
-                  </form>
-                </Form>
-              </CardContent>
-              <CardFooter className="flex justify-center text-sm text-muted-foreground">
-                By signing up, you agree to our Terms of Service and Privacy Policy
-              </CardFooter>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+    // <SidebarProvider>
+    //   <AppSidebar />
+    //     <div className="flex-1 flex flex-col min-h-screen">
+    //       <AppHeader />
+<div className="relative min-h-screen bg-gradient-to-br from-purple-100 via-slate-100 to-blue-100 flex items-center justify-center px-4 overflow-hidden">
+  {/* Decorative floating icons */}
+  <div className="absolute top-10 left-10 text-blue-300 animate-float-slow">
+    <Mail className="w-10 h-10" />
+  </div>
+  <div className="absolute bottom-14 right-10 text-purple-300 animate-float-slower">
+    <User className="w-8 h-8" />
+  </div>
+  <div className="absolute top-[60%] left-[75%] text-indigo-200 animate-float-slowest">
+    <Lock className="w-12 h-12" />
+  </div>
+
+  {/* Subtle grid overlay */}
+  <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 pointer-events-none z-0" />
+
+  {/* Auth Box */}
+  <div className="relative z-10 w-full max-w-2xl rounded-3xl shadow-2xl bg-white border border-slate-200 overflow-hidden">
+    <div className="text-center p-8 border-b">
+      <h1 className="text-4xl font-bold flex items-center justify-center gap-2">
+        <span className="rounded-lg bg-green-700 px-3 py-1 text-white">Comm</span>
+        <span className="text-slate-700">Unity</span>
+      </h1>
+      <p className="text-slate-500 mt-3 text-sm">Connect communities for collaborative problem solving</p>
     </div>
+
+    <Tabs defaultValue="login" className="px-8 py-6">
+      <TabsList className="grid grid-cols-2 bg-slate-100 rounded-lg mb-6">
+        <TabsTrigger value="login">Login</TabsTrigger>
+        <TabsTrigger value="signup">Sign Up</TabsTrigger>
+      </TabsList>
+
+      {/* Login Form */}
+      <TabsContent value="login">
+        <Card className="shadow-none border-0">
+          <CardHeader>
+            <CardTitle className="text-xl">Welcome back 👋</CardTitle>
+            <CardDescription>Enter your credentials to continue</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {/* Error Alert */}
+            {authError && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{authError}</AlertDescription>
+              </Alert>
+            )}
+
+            <Form {...loginForm}>
+              <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4">
+                {/* Email */}
+                <FormField
+                  control={loginForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                      <div className="relative">
+    <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+    <Input
+      placeholder="your.email@example.com"
+      className="pl-10"
+      {...field}
+                        />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Password */}
+                <FormField
+                  control={loginForm.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={isShowingPassword ? "text" : "password"}
+                            className="pl-10 pr-10"
+                            {...field}
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-0 top-0"
+                            onClick={() => setIsShowingPassword(!isShowingPassword)}
+                          >
+                            {isShowingPassword ? <EyeOff /> : <Eye />}
+                            <span className="sr-only">
+                              {isShowingPassword ? "Hide password" : "Show password"}
+                            </span>
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Submit */}
+                <Button type="submit" className="w-full bg-green-700 hover:bg-purple-800" disabled={isLoading}>
+                  {isLoading ? "Logging in..." : "Login"}
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      {/* Signup Form */}
+      <TabsContent value="signup">
+        <Card className="shadow-none border-0">
+          <CardHeader>
+            <CardTitle className="text-xl">Join the movement 🚀</CardTitle>
+            <CardDescription>Create your account now</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {/* Error Alert */}
+            {authError && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{authError}</AlertDescription>
+              </Alert>
+            )}
+
+            <Form {...signupForm}>
+              <form onSubmit={signupForm.handleSubmit(handleSignup)} className="space-y-4">
+                {/* Username */}
+                <FormField
+                  control={signupForm.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                      <div className="relative">
+          <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="username"
+            className="pl-10"
+            {...field}
+          />
+        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Full Name */}
+                <FormField
+                  control={signupForm.control}
+                  name="fullName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Full Name</FormLabel>
+                      <FormControl>
+                      <div className="relative">
+  <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+  <Input
+    placeholder="your name"
+    className="pl-10"
+    {...field}
+  />
+</div>
+
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Email */}
+                <FormField
+                  control={signupForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                      <div className="relative">
+  <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+  <Input
+    placeholder="your.email@example.com"
+    className="pl-10"
+    {...field}
+  />
+</div>
+
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Password */}
+                <FormField
+                  control={signupForm.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={isShowingPassword ? "text" : "password"}
+                            className="pl-10 pr-10"
+                            {...field}
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-0 top-0"
+                            onClick={() => setIsShowingPassword(!isShowingPassword)}
+                          >
+                            {isShowingPassword ? <EyeOff /> : <Eye />}
+                            <span className="sr-only">
+                              {isShowingPassword ? "Hide password" : "Show password"}
+                            </span>
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Submit */}
+                <Button type="submit" className="w-full bg-green-700 hover:bg-purple-800" disabled={isLoading}>
+                  {isLoading ? "Creating account..." : "Sign Up"}
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+          <CardFooter className="flex justify-center text-sm text-muted-foreground">
+            By signing up, you agree to our Terms and Privacy Policy.
+          </CardFooter>
+        </Card>
+      </TabsContent>
+    </Tabs>
+  </div>
+</div>
+
+    // </SidebarProvider>
+
   );
 };
 

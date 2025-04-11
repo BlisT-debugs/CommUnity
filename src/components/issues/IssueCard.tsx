@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 
 interface IssueCardProps {
   id: string;
+  name: string;
   title: string;
   description: string;
   category: string;

@@ -11,12 +11,15 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import Communities from "./pages/Communities";
+import CommunityDetail from "./pages/CommunityDetail";
 import Issues from "./pages/Issues";
 import Projects from "./pages/Projects";
 import Discussions from "./pages/Discussions";
 import Ideas from "./pages/Ideas";
 import Achievements from "./pages/Achievements";
-import CommunityDetail from "./pages/CommunityDetail";
+import WasteManagement from "./pages/issues/WasteManagement";
+import Education from "./pages/issues/Education";
+//import Safety from "./pages/issues/Safety";import CommunityDetail from "./pages/CommunityDetail";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notifications";
@@ -55,7 +58,8 @@ function App() {
                   <Route path="/notifications" element={<Notifications />} />
                   <Route path="*" element={<NotFound />} />
                   <Route path="/helpline" element={<HelplineSection />} />
-
+                  <Route path="/issues/waste-management" element={<WasteManagement />} />
+<Route path="/issues/education" element={<Education />} />
                 </Routes>
                 <Toaster />
                 <Sonner />
