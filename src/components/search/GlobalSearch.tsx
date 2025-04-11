@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search as SearchIcon, X, Loader2 } from 'lucide-react';
+import { Search as SearchIcon, X, Loader2, Mic, MicOff } from 'lucide-react';
 import { 
   CommandDialog, 
   CommandEmpty, 
@@ -14,13 +14,68 @@ import { useApp } from '@/contexts/AppContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
+// Define types for search results
+type SearchResultItem = {
+  id: string;
+  url: string;
+  title: string;
+  type: 'community' | 'issue';
+  category?: 'environment' | 'infrastructure' | 'safety' | 'education' | 'health';
+};
+
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
+
 const GlobalSearch: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [isListening, setIsListening] = useState(false);
   const { performSearch, searchResults, isSearching, connectionStatus } = useApp();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+  const recognitionRef = useRef<any>(null);
+
+  // Initialize speech recognition
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+        
+        recognition.onresult = (event: any) => {
+          const transcript = event.results[0][0].transcript;
+          setQuery(transcript);
+          performSearch(transcript);
+        };
+        
+        recognition.onerror = (event: any) => {
+          console.error('Speech recognition error', event.error);
+          setIsListening(false);
+        };
+        
+        recognition.onend = () => {
+          setIsListening(false);
+        };
+        
+        recognitionRef.current = recognition;
+      }
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, [performSearch]);
 
   // Handle keyboard shortcut to open search
   useEffect(() => {
@@ -47,18 +102,30 @@ const GlobalSearch: React.FC = () => {
     if (!open) return;
 
     const timer = setTimeout(() => {
-      if (query.trim()) {
+      if (query) {
         performSearch(query);
-      } else {
-        // Clear results when query is empty
-        performSearch('');
       }
     }, 300); // Debounce search
 
     return () => clearTimeout(timer);
   }, [query, open, performSearch]);
 
-  const handleSelect = (item: { id: string; url: string }) => {
+  const toggleVoiceRecognition = () => {
+    if (!recognitionRef.current) {
+      console.error('Speech recognition not supported');
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
+
+  const handleSelect = (item: SearchResultItem) => {
     setOpen(false);
     setQuery('');
     navigate(item.url);
@@ -69,10 +136,7 @@ const GlobalSearch: React.FC = () => {
       <Button
         variant="outline"
         className="relative h-9 w-9 p-0 xl:h-10 xl:w-60 xl:justify-start xl:px-3 xl:py-2"
-        onClick={() => {
-          setOpen(true);
-          setQuery('');
-        }}
+        onClick={() => setOpen(true)}
       >
         <SearchIcon className="h-4 w-4 xl:mr-2" aria-hidden="true" />
         <span className="hidden xl:inline-flex">{t('Search')}</span>
@@ -82,19 +146,67 @@ const GlobalSearch: React.FC = () => {
         </kbd>
       </Button>
 
-      <CommandDialog open={open} onOpenChange={(isOpen) => {
-        setOpen(isOpen);
-        if (!isOpen) setQuery('');
-      }}>
-        <CommandInput
-          ref={inputRef}
-          placeholder={connectionStatus === 'offline' ? 
-            `${t('Search')} (offline mode)` : 
-            `${t('Search')} ${t('communities')}, ${t('issues')}`
-          }
-          value={query}
-          onValueChange={setQuery}
-        />
+      <CommandDialog open={open} onOpenChange={setOpen}>
+      <div className="relative flex items-center gap-1 pr-12">
+      <CommandInput
+            ref={inputRef}
+            placeholder={connectionStatus === 'offline' ? 
+              `${t('Search')} (offline mode)` : 
+              `${t('Search')} ${t('communities')}, ${t('issues')}`
+            }
+            value={query}
+            onValueChange={setQuery}
+            className="pr-50"
+
+          />
+          
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex space-x-2 items-center">
+        
+  {/* Clear (X) Icon */}
+  {query && (
+    <button
+      onClick={() => setQuery("")}
+      className="p-1 text-gray-500 hover:text-gray-700"
+      aria-label="Clear search"
+    >
+      <X className="h-4 w-4" />
+    </button>
+  )}
+          {isListening && (
+    <div className="absolute right-14 top-1/2 -translate-y-1/2 flex items-center">
+      <span className="relative flex h-2 w-2 mr-1">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+      </span>
+      <span className="text-xs text-muted-foreground">Listening...</span>
+    </div>
+  )}
+          <button
+            type="button"
+            onClick={toggleVoiceRecognition}
+            className={cn(
+              "p-1 rounded-full",
+              isListening ? "bg-red-100 text-red-600" : "text-gray-500 hover:text-gray-700"
+            )}
+            aria-label={isListening ? "Stop listening" : "Start voice search"}
+          >
+            {isListening ? (
+              <MicOff className="h-4 w-4" />
+            ) : (
+              <Mic className="h-4 w-4" />
+            )}
+          </button>
+          {/* {isListening && (
+            <div className="absolute right-12 top-1/2 -translate-y-1/2 flex items-center">
+              <span className="relative flex h-2 w-2 mr-1">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+              </span>
+              <span className="text-xs text-muted-foreground">Listening...</span>
+            </div>
+          )} */}
+        </div>
+        </div>
         <CommandList>
           {isSearching ? (
             <div className="p-4 text-center">
@@ -108,7 +220,7 @@ const GlobalSearch: React.FC = () => {
               {searchResults.length > 0 && (
                 <>
                   <CommandGroup heading={t('Communities')}>
-                    {searchResults
+                    {(searchResults as SearchResultItem[])
                       .filter(item => item.type === 'community')
                       .map(item => (
                         <CommandItem 
@@ -128,7 +240,7 @@ const GlobalSearch: React.FC = () => {
                   </CommandGroup>
                   
                   <CommandGroup heading={t('Issues')}>
-                    {searchResults
+                    {(searchResults as SearchResultItem[])
                       .filter(item => item.type === 'issue')
                       .map(item => (
                         <CommandItem 

@@ -5,7 +5,7 @@ import AppSidebar from '@/components/layout/AppSidebar';
 import AchievementBadge from '@/components/gamification/AchievementBadge';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Award, Star, Trophy, Target, Users, Leaf, BookOpen } from 'lucide-react';
+import { Award, Star, Trophy, Target, Users, Leaf, BookOpen, Flame, Puzzle } from 'lucide-react';
 import { achievements } from '@/services/mockData';
 import { useUserAchievements } from '@/hooks/useUserAchievements';
 
@@ -39,7 +39,9 @@ const Achievements = () => {
     { title: 'Environmental', icon: <Leaf className="h-5 w-5 text-green-500" />, key: 'environment' },
     { title: 'Leadership', icon: <Trophy className="h-5 w-5 text-red-500" />, key: 'leadership' },
     { title: 'Collaboration', icon: <Target className="h-5 w-5 text-purple-500" />, key: 'collaboration' },
-    { title: 'Other Achievements', icon: <BookOpen className="h-5 w-5 text-orange-500" />, key: 'other' }
+    { title: 'Learning', icon: <BookOpen className="h-5 w-5 text-orange-500" />, key: 'learning' },
+    { title: 'Challenges', icon: <Puzzle className="h-5 w-5 text-pink-500" />, key: 'challenges' },
+    { title: 'Streaks', icon: <Flame className="h-5 w-5 text-rose-500" />, key: 'streaks' },
   ];
 
   const getCategoryAchievements = (key: string) => {
@@ -54,16 +56,12 @@ const Achievements = () => {
         return filteredAchievements.filter(a => a.name?.toLowerCase().includes('leader'));
       case 'collaboration':
         return filteredAchievements.filter(a => a.name?.toLowerCase().includes('collaborat'));
-      case 'other':
-        return filteredAchievements.filter(a => 
-          !a.name?.toLowerCase().includes('contribution') && 
-          !a.name?.toLowerCase().includes('first') &&
-          !a.name?.toLowerCase().includes('eco') &&
-          !a.name?.toLowerCase().includes('environment') &&
-          !a.name?.toLowerCase().includes('community') &&
-          !a.name?.toLowerCase().includes('leader') &&
-          !a.name?.toLowerCase().includes('collaborat')
-        );
+      case 'learning':
+        return filteredAchievements.filter(a => a.name?.toLowerCase().includes('learn') || a.name?.toLowerCase().includes('course'));
+      case 'challenges':
+        return filteredAchievements.filter(a => a.name?.toLowerCase().includes('challenge'));
+      case 'streaks':
+        return filteredAchievements.filter(a => a.name?.toLowerCase().includes('streak'));
       default:
         return [];
     }
@@ -94,7 +92,7 @@ const Achievements = () => {
               </div>
             ) : (
               <>
-                <Tabs defaultValue="all" className="mb-8" onValueChange={setTab}>
+                <Tabs defaultValue="all" className="mb-8" onValueChange={setTab} value={tab}>
                   <div className="border-b">
                     <TabsList className="bg-white">
                       <TabsTrigger value="all">All</TabsTrigger>
@@ -122,7 +120,8 @@ const Achievements = () => {
                           {items.map((achievement) => (
                             <div
                               key={achievement.id}
-                              className={`rounded-xl p-6 flex flex-col items-center text-center space-y-4 border-2 transition-shadow hover:shadow-lg hover:border-primary bg-white`}
+                              className={`rounded-2xl p-6 flex flex-col items-center text-center space-y-4 border-2 transition-all hover:shadow-xl hover:scale-[1.02] 
+                                ${achievement.unlocked ? 'bg-white hover:border-primary' : 'bg-muted text-muted-foreground opacity-70 border-muted'}`}
                             >
                               <AchievementBadge
                                 name={achievement.name}
