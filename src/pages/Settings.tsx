@@ -2,7 +2,7 @@
 import React from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import AppHeader from '@/components/layout/AppHeader';
-import AppSidebar from '@/components/layout/AppSidebar';
+
 import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -23,9 +23,8 @@ const Settings = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <AppSidebar />
         <div className="flex-1 flex flex-col min-h-screen">
-          <AppHeader />
+
           
           <main className="flex-1 container py-6">
             <h1 className="text-3xl font-bold mb-6">{t('Settings')}</h1>

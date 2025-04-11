@@ -1,5 +1,4 @@
 import React from 'react';
-import AppSidebar from '@/components/layout/AppSidebar';
 import { Phone, ShieldCheck, PhoneCall, UserCheck, Siren, Heart } from 'lucide-react';
 import AppHeader from '@/components/layout/AppHeader';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -54,9 +53,7 @@ const contacts = [
 const HelplineSection = () => {
   return (
     <SidebarProvider>
-      <AppSidebar />
         <div className="flex-1 flex flex-col min-h-screen">
-          <AppHeader />
     <div className="max-w-5xl mx-auto p-6">
       <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">
         📞 Helpline Contacts

@@ -8,8 +8,6 @@ import { Eye, EyeOff, Mail, Lock, User, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import AppHeader from '@/components/layout/AppHeader';
-import AppSidebar from '@/components/layout/AppSidebar';
-
 
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';

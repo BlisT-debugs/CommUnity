@@ -8,6 +8,8 @@ import { useCommunities } from '@/hooks/useCommunities';
 type ConnectionStatus = 'online' | 'offline' | 'low';
 
 interface AppContextType {
+  isMobile: boolean;
+  toggleSidebar: () => void;
   isOnline: boolean;
   connectionStatus: ConnectionStatus;
   enableLowDataMode: boolean;
@@ -23,17 +25,24 @@ const AppContext = createContext<AppContextType>({
   isOnline: true,
   connectionStatus: 'online',
   enableLowDataMode: false,
-  toggleLowDataMode: () => {},
+  toggleLowDataMode: () => { },
   performSearch: async () => [],
   searchResults: [],
   location: null,
-  setLocation: () => {},
+  setLocation: () => { },
   isSearching: false,
+  isMobile: false,
+  toggleSidebar: function (): void {
+    throw new Error('Function not implemented.');
+  }
 });
 
 export const useApp = () => useContext(AppContext);
 
 export const AppProvider: React.FC<{children: ReactNode}> = ({ children }) => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(navigator.onLine ? 'online' : 'offline');
   const [enableLowDataMode, setEnableLowDataMode] = useState(
@@ -179,6 +188,8 @@ export const AppProvider: React.FC<{children: ReactNode}> = ({ children }) => {
   return (
     <AppContext.Provider 
       value={{ 
+        isMobile,
+        toggleSidebar,
         isOnline, 
         connectionStatus,
         enableLowDataMode, 

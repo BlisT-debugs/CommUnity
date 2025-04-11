@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import AppHeader from '@/components/layout/AppHeader';
-import AppSidebar from '@/components/layout/AppSidebar';
 import { Button } from '@/components/ui/button';
 import { 
   Card, 
@@ -30,7 +29,9 @@ import { format } from 'date-fns';
 const CommunityDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
-  const { joinCommunity, isJoining } = useJoinCommunity();
+  const { joinCommunity, isJoining } = useJoinCommunity(id, (communityId) => {
+    console.log(`Joined community with ID: ${communityId}`);
+  });
   const [showCreateProjectDialog, setShowCreateProjectDialog] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
   
@@ -106,9 +107,7 @@ const CommunityDetail = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <AppSidebar />
         <div className="flex-1 flex flex-col min-h-screen">
-          <AppHeader />
           
           <main className="flex-1 container py-6">
             {isLoading ? (

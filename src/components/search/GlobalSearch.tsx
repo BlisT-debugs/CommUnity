@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search as SearchIcon,X, Loader2, Mic, MicOff } from 'lucide-react';
+
 import { 
   CommandDialog, 
   CommandEmpty, 
@@ -13,6 +14,8 @@ import { Button } from '@/components/ui/button';
 import { useApp } from '@/contexts/AppContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
+
+
 
 // Define types for search results
 type SearchResultItem = {
@@ -34,48 +37,58 @@ const GlobalSearch: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [isListening, setIsListening] = useState(false);
+  const [sourceLang, setSourceLang] = useState('en-US'); // default to English
+
   const { performSearch, searchResults, isSearching, connectionStatus } = useApp();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
 
+
   // Initialize speech recognition
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      
+  
       if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
         recognition.continuous = false;
         recognition.interimResults = false;
-        recognition.lang = 'en-US';
-        
-        recognition.onresult = (event: any) => {
+        recognition.lang = sourceLang;
+  
+        recognition.onresult = async (event: any) => {
           const transcript = event.results[0][0].transcript;
-          setQuery(transcript);
-          performSearch(transcript);
+          const detectedLang = 'auto'; // or 'hi' if you want to default to Hindi
+          try {
+            const translated = await translateToEnglish(transcript, detectedLang);
+            setQuery(translated); // sets the search box value
+            performSearch(translated); // calls your search with the translated text
+          } catch (error) {
+            console.error('Translation failed:', error);
+            setQuery(transcript); // fallback to original
+            performSearch(transcript);
+          }
         };
-        
+  
         recognition.onerror = (event: any) => {
           console.error('Speech recognition error', event.error);
           setIsListening(false);
         };
-        
+  
         recognition.onend = () => {
           setIsListening(false);
         };
-        
+  
         recognitionRef.current = recognition;
       }
     }
-
+  
     return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
+      recognitionRef.current?.stop();
     };
-  }, [performSearch]);
+  }, [sourceLang, performSearch]);
+  
 
   // Handle keyboard shortcut to open search
   useEffect(() => {
@@ -89,6 +102,33 @@ const GlobalSearch: React.FC = () => {
     document.addEventListener('keydown', down);
     return () => document.removeEventListener('keydown', down);
   }, []);
+
+
+  const translateToEnglish = async (text: string, sourceLang: string): Promise<string> => {
+    try {
+      const response = await fetch(
+        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|en`
+      );
+      const data = await response.json();
+  
+      if (data.responseStatus === 200 && data.responseData?.translatedText) {
+        return data.responseData.translatedText;
+      } else {
+        throw new Error(data.responseDetails || 'Translation failed');
+      }
+    } catch (error) {
+      console.log('MyMemory failed, trying LibreTranslate...');
+      const fallback = await fetch('https://libretranslate.de/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ q: text, source: sourceLang, target: 'en' }),
+      });
+  
+      const fallbackData = await fallback.json();
+      return fallbackData.translatedText || text;
+    }
+  };
+  
 
   // Focus input when dialog opens
   useEffect(() => {

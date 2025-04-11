@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import AppHeader from '@/components/layout/AppHeader';
-import AppSidebar from '@/components/layout/AppSidebar';
 import { useCommunities } from '@/hooks/useCommunities';
 import CommunityCard from '@/components/community/CommunityCard';
 import { useAuth } from '@/hooks/useAuth';
@@ -18,10 +17,7 @@ const Communities = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <AppSidebar />
-        <div className="flex-1 flex flex-col min-h-screen">
-          <AppHeader />
-          
+        <div className="flex-1 flex flex-col min-h-screen">          
           <main className="flex-1 container py-6">
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-3xl font-bold">Communities</h1>

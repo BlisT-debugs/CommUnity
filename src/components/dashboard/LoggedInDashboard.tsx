@@ -106,8 +106,7 @@ const LoggedInDashboard: React.FC = () => {
                   comments={0}
                   contributors={0}
                   progress={issue.status === 'completed' ? 100 : issue.status === 'in-progress' ? 50 : 0}
-                  createdAt={new Date(issue.created_at).toLocaleDateString()}
-                />
+                  createdAt={new Date(issue.created_at).toLocaleDateString()} name={''}                />
               ))
             ) : (
               <div className="col-span-2 text-center py-12">
