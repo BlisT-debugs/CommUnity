@@ -94,7 +94,7 @@ const Achievements = () => {
               <>
                 <Tabs defaultValue="all" className="mb-8" onValueChange={setTab} value={tab}>
                   <div className="border-b">
-                    <TabsList className="bg-white">
+                    <TabsList className="bg-white overflow-x-auto whitespace-nowrap">
                       <TabsTrigger value="all">All</TabsTrigger>
                       <TabsTrigger value="bronze">Bronze</TabsTrigger>
                       <TabsTrigger value="silver">Silver</TabsTrigger>
@@ -109,37 +109,40 @@ const Achievements = () => {
                 <div className="space-y-12">
                   {categories.map(({ title, icon, key }) => {
                     const items = getCategoryAchievements(key);
-                    if (!items.length) return null;
                     return (
                       <div key={key} className="animate-fade-in-up">
                         <div className="flex items-center gap-2 mb-4">
                           {icon}
                           <h2 className="text-2xl font-semibold text-primary/90">{title}</h2>
                         </div>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                          {items.map((achievement) => (
-                            <div
-                              key={achievement.id}
-                              className={`rounded-2xl p-6 flex flex-col items-center text-center space-y-4 border-2 transition-all hover:shadow-xl hover:scale-[1.02] 
-                                ${achievement.unlocked ? 'bg-white hover:border-primary' : 'bg-muted text-muted-foreground opacity-70 border-muted'}`}
-                            >
-                              <AchievementBadge
-                                name={achievement.name}
-                                description={achievement.description}
-                                type={achievement.type}
-                                unlocked={!!achievement.unlocked}
-                                progress={achievement.progress}
-                                icon={<Star className="h-6 w-6 text-yellow-400" />}
-                                className="w-16 h-16"
-                              />
-                              <h3 className="font-semibold text-lg text-primary/90">{achievement.name}</h3>
-                              <p className="text-sm text-muted-foreground">{achievement.description}</p>
-                              <Badge variant={achievement.unlocked ? "default" : "outline"} className="text-xs px-3 py-1">
-                                {achievement.unlocked ? "Unlocked" : achievement.progress ? `${achievement.progress}% Complete` : "Locked"}
-                              </Badge>
-                            </div>
-                          ))}
-                        </div>
+                        {items.length === 0 ? (
+                          <p className="text-muted-foreground text-sm">No achievements in this category.</p>
+                        ) : (
+                          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {items.map((achievement) => (
+                              <div
+                                key={achievement.id}
+                                className={`rounded-2xl p-6 flex flex-col items-center text-center space-y-4 border-2 transition-all hover:shadow-xl hover:scale-[1.02] 
+                                  ${achievement.unlocked ? 'bg-white hover:border-primary' : 'bg-muted text-muted-foreground opacity-70 border-muted'}`}
+                              >
+                                <AchievementBadge
+                                  name={achievement.name}
+                                  description={achievement.description}
+                                  type={achievement.type}
+                                  unlocked={!!achievement.unlocked}
+                                  progress={achievement.progress}
+                                  icon={<Star className="h-6 w-6 text-yellow-400" />}
+                                  className="w-16 h-16"
+                                />
+                                <h3 className="font-semibold text-lg text-primary/90">{achievement.name}</h3>
+                                <p className="text-sm text-muted-foreground">{achievement.description}</p>
+                                <Badge variant={achievement.unlocked ? "default" : "outline"} className="text-xs px-3 py-1">
+                                  {achievement.unlocked ? "Unlocked" : achievement.progress ? `${achievement.progress}% Complete` : "Locked"}
+                                </Badge>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
@@ -162,3 +165,4 @@ const Achievements = () => {
 };
 
 export default Achievements;
+

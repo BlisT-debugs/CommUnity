@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search as SearchIcon, X, Loader2, Mic, MicOff } from 'lucide-react';
+import { Search as SearchIcon,X, Loader2, Mic, MicOff } from 'lucide-react';
 import { 
   CommandDialog, 
   CommandEmpty, 
@@ -147,8 +147,8 @@ const GlobalSearch: React.FC = () => {
       </Button>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
-      <div className="relative flex items-center gap-1 pr-12">
-      <CommandInput
+        <div className="relative">
+          <CommandInput
             ref={inputRef}
             placeholder={connectionStatus === 'offline' ? 
               `${t('Search')} (offline mode)` : 
@@ -156,57 +156,42 @@ const GlobalSearch: React.FC = () => {
             }
             value={query}
             onValueChange={setQuery}
-            className="pr-50"
-
+            className="pr-14"
           />
           
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex space-x-2 items-center">
-        
-  {/* Clear (X) Icon */}
-  {query && (
-    <button
-      onClick={() => setQuery("")}
-      className="p-1 text-gray-500 hover:text-gray-700"
-      aria-label="Clear search"
-    >
-      <X className="h-4 w-4" />
-    </button>
-  )}
+          <div className="absolute right-0.5 top-1/2 -translate-y-1/2 flex items-center gap-2">
+ 
+            
+            {/* Microphone button with listening state */}
+            <button
+              type="button"
+              onClick={toggleVoiceRecognition}
+              className={cn(
+                "text-muted-foreground hover:text-foreground transition-colors",
+                isListening && "text-red-500"
+              )}
+              aria-label={isListening ? "Stop listening" : "Start voice search"}
+            >
+              {isListening ? (
+                <MicOff className="h-4 w-4" />
+              ) : (
+                <Mic className="h-4 w-4" />
+              )}
+            </button>
+          </div>
+          
+          {/* Listening indicator appears only when active */}
           {isListening && (
-    <div className="absolute right-14 top-1/2 -translate-y-1/2 flex items-center">
-      <span className="relative flex h-2 w-2 mr-1">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-      </span>
-      <span className="text-xs text-muted-foreground">Listening...</span>
-    </div>
-  )}
-          <button
-            type="button"
-            onClick={toggleVoiceRecognition}
-            className={cn(
-              "p-1 rounded-full",
-              isListening ? "bg-red-100 text-red-600" : "text-gray-500 hover:text-gray-700"
-            )}
-            aria-label={isListening ? "Stop listening" : "Start voice search"}
-          >
-            {isListening ? (
-              <MicOff className="h-4 w-4" />
-            ) : (
-              <Mic className="h-4 w-4" />
-            )}
-          </button>
-          {/* {isListening && (
-            <div className="absolute right-12 top-1/2 -translate-y-1/2 flex items-center">
-              <span className="relative flex h-2 w-2 mr-1">
+            <div className="absolute right-16 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
               </span>
               <span className="text-xs text-muted-foreground">Listening...</span>
             </div>
-          )} */}
+          )}
         </div>
-        </div>
+        
         <CommandList>
           {isSearching ? (
             <div className="p-4 text-center">
