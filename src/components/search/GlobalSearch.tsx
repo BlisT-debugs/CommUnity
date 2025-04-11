@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search as SearchIcon, X, Loader2 } from 'lucide-react';
@@ -36,19 +35,32 @@ const GlobalSearch: React.FC = () => {
     return () => document.removeEventListener('keydown', down);
   }, []);
 
+  // Focus input when dialog opens
+  useEffect(() => {
+    if (open && inputRef.current) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [open]);
+
   // Handle search when query changes
   useEffect(() => {
+    if (!open) return;
+
     const timer = setTimeout(() => {
-      if (query) {
+      if (query.trim()) {
         performSearch(query);
+      } else {
+        // Clear results when query is empty
+        performSearch('');
       }
     }, 300); // Debounce search
 
     return () => clearTimeout(timer);
-  }, [query, performSearch]);
+  }, [query, open, performSearch]);
 
   const handleSelect = (item: { id: string; url: string }) => {
     setOpen(false);
+    setQuery('');
     navigate(item.url);
   };
 
@@ -57,7 +69,10 @@ const GlobalSearch: React.FC = () => {
       <Button
         variant="outline"
         className="relative h-9 w-9 p-0 xl:h-10 xl:w-60 xl:justify-start xl:px-3 xl:py-2"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+          setQuery('');
+        }}
       >
         <SearchIcon className="h-4 w-4 xl:mr-2" aria-hidden="true" />
         <span className="hidden xl:inline-flex">{t('Search')}</span>
@@ -67,7 +82,10 @@ const GlobalSearch: React.FC = () => {
         </kbd>
       </Button>
 
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog open={open} onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        if (!isOpen) setQuery('');
+      }}>
         <CommandInput
           ref={inputRef}
           placeholder={connectionStatus === 'offline' ? 
