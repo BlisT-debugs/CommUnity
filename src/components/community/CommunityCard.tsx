@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { useJoinCommunity } from '@/hooks/useJoinCommunity';
 
 interface CommunityCardProps {
   id: string;
@@ -74,8 +75,11 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
             </Link>
           </Button>
         ) : (
-          <Button size="sm" className="w-full" onClick={onJoin ? () => onJoin(id) : undefined}>
-            Join Community
+          <Button size="sm" className="w-full" onClick={onJoin ? () => useJoinCommunity(id, onJoin) : undefined}>
+            <Link to={`/community/${id}`}>
+            <Users className="mr-1 h-4 w-4" />
+            <span>Join Community</span>
+            </Link>
           </Button>
         )}
       </CardFooter>
