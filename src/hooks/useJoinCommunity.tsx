@@ -14,7 +14,7 @@ interface JoinCommunityOptions {
   onSuccess?: () => void;
 }
 
-export const useJoinCommunity = () => {
+export const useJoinCommunity = (id: string, onJoin: (id: string) => void) => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
