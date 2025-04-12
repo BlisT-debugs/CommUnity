@@ -111,7 +111,7 @@ const GlobalSearch: React.FC = () => {
       );
       const data = await response.json();
   
-      if (data.responseStatus === 200 && data.responseData?.translatedText) {
+      if (data.responseStatus === 10 && data.responseData?.translatedText) {
         return data.responseData.translatedText;
       } else {
         throw new Error(data.responseDetails || 'Translation failed');

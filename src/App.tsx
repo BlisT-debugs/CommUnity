@@ -21,6 +21,8 @@ import CommunityDetail from "./pages/CommunityDetail";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notifications";
+import HelplineSection from "./components/helpline/HelplineSection";
+
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -48,6 +50,8 @@ function App() {
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/notifications" element={<Notifications />} />
                     <Route path="*" element={<NotFound />} />
+                    <Route path="/helpline" element={<HelplineSection />} />
+
                   </Routes>
                   <Toaster />
                   <Sonner />
