@@ -106,6 +106,9 @@ const CommunityDetail = () => {
   
   return (
     <SidebarProvider>
+       <div className="min-h-screen w-full bg-gradient-to-br from-purple-300 via-pink-300 to-red-300 dark:from-red-900 dark:via-pink-800 dark:to-pink-900">
+    <div className="min-h-screen flex flex-col w-full bg-white/80 dark:bg-black/30 backdrop-blur-sm">
+      <main className="flex-1 container py-6"></main>
       <div className="min-h-screen flex w-full">
         <div className="flex-1 flex flex-col min-h-screen">
           
@@ -305,14 +308,17 @@ const CommunityDetail = () => {
               </Card>
             )}
           </main>
+        
         </div>
       </div>
-      
+      </div>
       <CreateProjectDialog
         open={showCreateProjectDialog}
         onOpenChange={setShowCreateProjectDialog}
         communityId={id}
       />
+      </div>
+  
     </SidebarProvider>
   );
 };

@@ -17,6 +17,7 @@ import { useIssues } from '@/hooks/useIssues';
 import { useUserAchievements } from '@/hooks/useUserAchievements';
 
 const LoggedInDashboard: React.FC = () => {
+
   const [createIssueDialogOpen, setCreateIssueDialogOpen] = useState(false);
   const { profile } = useAuth();
   const { communities, isLoading: isCommunitiesLoading } = useCommunities({ limit: 3 });
