@@ -19,11 +19,13 @@
 
  # Installation
 ***Clone the repository***
+
 git clone https://github.com/BlisT-debugs/CommUnity.git
 
 cd CommUnity
 
 ***1. Install dependencies***
+
 npm install
 
 ***2. Set up environment variables***
@@ -38,15 +40,20 @@ npm run dev
 
 # Testing
 ***Run frontend and backend tests***
+
 npm run test
 
 **We welcome contributions from everyone!**
+
 # Fork the project
 
 ->Create your feature branch (git checkout -b feat/amazing-feature)
+
 ->Commit your changes (git commit -m 'Add some amazing feature')
+
 ->Push to the branch (git push origin feat/amazing-feature)
-->Open a pull request 🎉
+
+->Open a pull request 
 
 # Team CommUnity
 
