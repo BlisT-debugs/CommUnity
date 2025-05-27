@@ -16,16 +16,16 @@ git clone https://github.com/BlisT-debugs/CommUnity.git
 
 cd CommUnity
 
-***Install dependencies***
+***1. Install dependencies***
 npm install
 
-***Set up environment variables***
+***2. Set up environment variables***
 
 cp .env.example .env
 
 Edit .env with your MongoDB URI, Firebase config, etc.
 
-***Run the development server***
+***3. Run the development server***
 
 npm run dev
 
