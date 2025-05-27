@@ -1,73 +1,49 @@
-# Welcome to your Lovable project
+**CommUnity** is a web-based platform designed to foster local engagement, solve grassroots problems, and celebrate community impact. It connects citizens, activists, and organizations to collaborate on issues like education, waste management, public infrastructure, and more.
 
-## Project info
+***Features***
+->Real-Time Issue Tracking — Report, track, and resolve local problems collaboratively.
+->Community Pages — Dedicated spaces for neighborhoods, schools, or social groups.
+->Gamification — Earn badges, climb leaderboards, and get recognized for impact.
+->Multilingual Support — Accessible to speakers of different languages for inclusivity.
+->Trust-Based Content Ranking — Filter noise and promote verified, high-quality posts.
+->Achievements & Leaderboard — Celebrate top contributors and community milestones.
+->Responsive UI — Seamless experience on desktop and mobile.
+->Role-Based Access — Manage roles for Citizens, Moderators, and Admins securely.
 
-**URL**: https://lovable.dev/projects/f86807b5-fa62-41bc-a88d-609cc502a8c1
+ ***Installation***
+# Clone the repository
+git clone https://github.com/BlisT-debugs/CommUnity.git
+cd CommUnity
 
-## How can I edit this code?
+# Install dependencies
+npm install
 
-There are several ways of editing your application.
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your MongoDB URI, Firebase config, etc.
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/f86807b5-fa62-41bc-a88d-609cc502a8c1) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Run the development server
 npm run dev
-```
 
-**Edit a file directly in GitHub**
+***Testing***
+# Run frontend and backend tests
+npm run test
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+**We welcome contributions from everyone!**
+***Fork the project***
 
-**Use GitHub Codespaces**
+->Create your feature branch (git checkout -b feat/amazing-feature)
+->Commit your changes (git commit -m 'Add some amazing feature')
+->Push to the branch (git push origin feat/amazing-feature)
+->Open a pull request 🎉
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+***Team CommUnity***
+**Arpan Raj**
 
-## What technologies are used for this project?
+**Praneetha Tanikella**
 
-This project is built with:
+**Amber Sahay**
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+**Ayush Raj**
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/f86807b5-fa62-41bc-a88d-609cc502a8c1) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+*CommUnity* was born from a desire to bridge the gap between citizens and change-makers. We believe small acts, amplified through collaboration, can lead to real transformation.
