@@ -1,6 +1,6 @@
 **CommUnity** is a web-based platform designed to foster local engagement, solve grassroots problems, and celebrate community impact. It connects citizens, activists, and organizations to collaborate on issues like education, waste management, public infrastructure, and more.
 
-***Features***
+# Features
 ->Real-Time Issue Tracking — Report, track, and resolve local problems collaboratively.
 ->Community Pages — Dedicated spaces for neighborhoods, schools, or social groups.
 ->Gamification — Earn badges, climb leaderboards, and get recognized for impact.
@@ -10,34 +10,39 @@
 ->Responsive UI — Seamless experience on desktop and mobile.
 ->Role-Based Access — Manage roles for Citizens, Moderators, and Admins securely.
 
- ***Installation***
-# Clone the repository
+ # Installation
+***Clone the repository***
 git clone https://github.com/BlisT-debugs/CommUnity.git
+
 cd CommUnity
 
-# Install dependencies
+***Install dependencies***
 npm install
 
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your MongoDB URI, Firebase config, etc.
+***Set up environment variables***
 
-# Run the development server
+cp .env.example .env
+
+Edit .env with your MongoDB URI, Firebase config, etc.
+
+***Run the development server***
+
 npm run dev
 
-***Testing***
-# Run frontend and backend tests
+# Testing
+***Run frontend and backend tests***
 npm run test
 
 **We welcome contributions from everyone!**
-***Fork the project***
+# Fork the project
 
 ->Create your feature branch (git checkout -b feat/amazing-feature)
 ->Commit your changes (git commit -m 'Add some amazing feature')
 ->Push to the branch (git push origin feat/amazing-feature)
 ->Open a pull request 🎉
 
-***Team CommUnity***
+# Team CommUnity
+
 **Arpan Raj**
 
 **Praneetha Tanikella**
