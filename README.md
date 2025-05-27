@@ -2,12 +2,19 @@
 
 # Features
 ->Real-Time Issue Tracking — Report, track, and resolve local problems collaboratively.
+
 ->Community Pages — Dedicated spaces for neighborhoods, schools, or social groups.
+
 ->Gamification — Earn badges, climb leaderboards, and get recognized for impact.
+
 ->Multilingual Support — Accessible to speakers of different languages for inclusivity.
+
 ->Trust-Based Content Ranking — Filter noise and promote verified, high-quality posts.
+
 ->Achievements & Leaderboard — Celebrate top contributors and community milestones.
+
 ->Responsive UI — Seamless experience on desktop and mobile.
+
 ->Role-Based Access — Manage roles for Citizens, Moderators, and Admins securely.
 
  # Installation
